@@ -1,70 +1,121 @@
-# Getting Started with Create React App
+Do check the `instructions.txt` file 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+./src/Components/TicTacToe
 
-## Available Scripts
+# TicTacToe.JSX EXPLANATION
 
-In the project directory, you can run:
+**Imports:**
 
-### `npm start`
+* `useState` and `useRef` hooks from React for managing component state and DOM element references.
+* `TicTacToe.css` for styling the game.
+* Image imports for the "X" and "O" icons.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+**Initial State:**
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* `data`: An array representing the game board state, initially empty (9 empty strings).
+* `count`: Tracks the number of turns played (starts at 0).
+* `lock`: A boolean flag to prevent further clicks after a win (starts as false).
+* Multiple `useRef` hooks are used to create references to each individual box element on the board (box1, box2, etc.) and the title element (`titleRef`).
 
-### `npm test`
+**`toggle` Function:**
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+* Handles clicks on each box.
+* It checks the `lock` state to prevent clicks after a win.
+* Based on the current turn (`count` being even or odd), it adds the appropriate image (X or O) to the clicked box's content using innerHTML.
+* It updates the `data` array with the corresponding symbol ("X" or "O") at the clicked box's index.
+* It increments the `count` to track turns.
+* It sets `lock` to true to prevent further clicks until the next turn is processed.
+* It calls the `checkWin` function to check for a winner after each turn.
 
-### `npm run build`
+**`checkWin` Function:**
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+* It checks all eight winning conditions (rows, columns, and diagonals) using the `data` array.
+* If a winning condition is met (three matching symbols in a row, column, or diagonal), it calls the `won` function with the winning symbol ("X" or "O").
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**`won` Function:**
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+* Sets the `lock` to true to prevent further clicks.
+* Updates the title element's content to display a congratulations message with the winning symbol's image ("X Won" or "O Won").
 
-### `npm run eject`
+**`reset` Function:**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+* Resets the game by:
+    * Setting `lock` to false.
+    * Resetting the `data` array to empty strings.
+    * Resetting the title to "Tic Tac Toe In React".
+    * Looping through the `box_array` (containing references to all box elements) and clearing their innerHTML content.
+    * Setting `count` back to 0.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**JSX Return:**
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+* The function returns the JSX code for the Tic Tac Toe component:
+    * A container element with the class `container`.
+    * A title element with the class `title` and a reference set using `ref={titleRef}`. The title displays "Tic Tac Toe In React" with "React" in a `<span>` tag.
+    * A `board` element containing three rows (`row1`, `row2`, `row3`).
+        * Each row contains three `boxes` elements with the class `boxes`.
+        * Each `boxes` element has a reference set using the corresponding `useRef` hook (e.g., `ref={box1}`) and an `onClick` event handler that calls the `toggle` function with the box's index as an argument.
+    * A reset button element with the class `reset` that calls the `reset` function on click.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+# TicTacToe.css EXPLANATION
 
-## Learn More
+This code defines the styles for the Tic Tac Toe game using CSS selectors. Here's a breakdown of each class and its styles:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**`.container`**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+* `text-align: center;`: This centers the content horizontally within the container element.
 
-### Code Splitting
+**`.title`**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+* `margin-top: 50px;`: Adds a 50px margin from the top for the title element.
+* `color: white;`: Sets the text color of the title to white.
+* `font-size: 60px;`: Sets the font size of the title to 60px.
+* `display: flex;`: Sets the display property to flex for the title element. This allows for centering the content within the title using the following properties.
+* `justify-content: center;`: Horizontally centers the content within the title element.
+* `align-items: center;`: Vertically centers the content within the title element.
 
-### Analyzing the Bundle Size
+**`.title span`**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+* Targets the `span` element nested within the `.title` element.
+* `color: aqua;`: Sets the text color of the content within the `<span>` tag to aqua.
+* `padding-left: 15px;`: Adds a left padding of 15px to the content within the `<span>` tag.
 
-### Making a Progressive Web App
+**`.reset`**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+* Styles the reset button element.
+* `width: 250px; height: 100px;`: Sets the width and height of the reset button.
+* `border: none; outline: none;`: Removes the default border and outline from the button.
+* `cursor: pointer;`: Sets the cursor to "pointer" on hover, indicating interactivity.
+* `border-radius: 50px;`: Creates a rounded border for the button with a radius of 50px (circular shape).
+* `background: #1f3540;`: Sets the background color of the button to a dark shade of blue (#1f3540).
+* `font-size: 26px;`: Sets the font size of the text on the button to 26px.
+* `color: #26ffcb;`: Sets the text color of the button to a light blue (#26ffcb).
+* `margin-top: 25px; margin-bottom: 50px;`: Adds margins to the top and bottom of the button for spacing.
 
-### Advanced Configuration
+**`.board`**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+* Styles the game board element.
+* `height: 600px; width: 564px;`: Sets the height and width of the game board.
+* `display: flex;`: Sets the display property to flex for the board element. This allows for positioning the rows within the board.
+* `margin: auto;`: Applies margins automatically to ensure the board is centered horizontally within the container.
 
-### Deployment
+**`.boxes`**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+* Styles the individual boxes on the game board.
+* `display: flex;`: Sets the display property to flex for the boxes. This allows for centering the "X" or "O" image within the box.
+* `height: 180px; width: 180px;`: Sets the height and width of each box.
+* `background-color: #1f3540;`: Sets the background color of the boxes to a dark shade of blue (#1f3540).
+* `border: 4px solid #0f1b21;`: Adds a solid border to the boxes with a width of 4px and a darker shade of blue (#0f1b21) color.
+* `border-radius: 12px;`: Creates rounded corners for the boxes with a radius of 12px.
+* `cursor: pointer;`: Sets the cursor to "pointer" on hover, indicating interactivity.
 
-### `npm run build` fails to minify
+**`.boxes img`**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* Targets the `img` element (the "X" or "O" image) placed within the `.boxes` element.
+* `margin: 50px;`: Adds a margin of 50px around the image, centering it within the box.
+
+**`.title img`**
+
+* Targets the `img` element (likely the React logo) placed within the `.title` element.
+* `padding: 20px 20px;`: Adds padding of 20px around the image for spacing.
+* `height: 50px;`: Sets the height of the image to 50px.
+
